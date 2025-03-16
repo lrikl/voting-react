@@ -6,9 +6,9 @@
 
     --font-size-sm: clamp(12px, 2vw, 24px);
     --font-size-md: clamp(24px, 4vw, 48px); 
-    --font-size-lg: clamp(32px, 8vw, 80px); 
+    --font-size-lg: clamp(40px, 8vw, 80px); 
 
-    --large-space: clamp(48px, 8vw, 80px);
+    --large-space: clamp(32px, 8vw, 80px);
     --gap-emojis: clamp(16px, 4vw, 40px);
     --medium-space: clamp(24px, 4vw, 48px);
     --padding-btn: clamp(8px, 1.5vw, 16px);
