@@ -7,26 +7,31 @@ import './style.css';
 
 class Main extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        emojiCounts: [0, 0, 0, 0, 0],
-        emojis: ["😒", "😂", "😇", "😎", "🙄"], 
-        showResults: false,
-        flyingEmojis: [],
-      };
+        super(props);
+
+        this.state = {
+            emojiCounts: JSON.parse(localStorage.getItem('emojiCountsYar')) || [0, 0, 0, 0, 0],
+            emojis: ["😒", "😂", "😇", "😎", "🙄"], 
+            showResults: false,
+            flyingEmojis: [],
+        };
     }
   
     emojiClick = (index, event) => {
-        this.setState({ showResults: false }); 
 
         this.setState((prevState) => {
             const newEmojiCounts = [...prevState.emojiCounts]; 
             newEmojiCounts[index] = newEmojiCounts[index] + 1;
-            return { emojiCounts: newEmojiCounts };
+            localStorage.setItem('emojiCountsYar', JSON.stringify(newEmojiCounts));
+            return { 
+                emojiCounts: newEmojiCounts,
+                showResults: false
+            };
         });
 
+        // анімація кліків emoji
         const rect = event.target.getBoundingClientRect();
-        const randomOffset = (Math.random() - 0.8) * 40; // відхилення вліво/вправо
+        const randomOffset = (Math.random() - 0.8) * 40; 
         const x = rect.left + rect.width / 2 + randomOffset;
         const y = rect.top; 
 
@@ -59,11 +64,16 @@ class Main extends React.Component {
         return this.state.emojiCounts.indexOf(maxCount);
     };
 
-    clearReults = () => {
-        this.setState((prevState) => ({
-            emojiCounts: prevState.emojiCounts.map(() => 0),
-            showResults: false
-        }));
+    clearResults = () => {
+        this.setState((prevState) => {
+          const clearedEmojiCounts = prevState.emojiCounts.map(() => 0);
+          localStorage.setItem('emojiCountsYar', JSON.stringify(clearedEmojiCounts));
+      
+          return {
+            emojiCounts: clearedEmojiCounts, 
+            showResults: false,
+          };
+        });
     };
   
     render() {
@@ -91,7 +101,7 @@ class Main extends React.Component {
 
                 <div className="btn-wrap">
                     <button className="btn btn-show" onClick={this.showResults}>Show Results</button>
-                    <button className="btn btn-clear" onClick={this.clearReults}>Clear</button>
+                    <button className="btn btn-clear" onClick={this.clearResults}>Clear</button>
                 </div>
 
                 {this.state.showResults && (
